@@ -1,0 +1,95 @@
+# TASK 1 - LIBRARY MANAGEMENT SYSTEM
+from datetime import datetime, timedelta
+
+def library_management_system():
+    print("Welcome to the Library Management System!")
+    library = {}
+    borrowed_items = {}
+
+    while True:
+        print("\nOptions:")
+        print("1. Add a new item to the library")
+        print("2. Borrow an item")
+        print("3. Return an item")
+        print("4. View all items in the library")
+        print("5. Search for an item")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1/2/3/4/5/6): ").strip()
+
+        if choice == '1':
+            # Add a new item
+            title = input("Enter the title: ").strip()
+            author = input("Enter the author: ").strip()
+            category = input("Enter the category (e.g., book, magazine, DVD): ").strip()
+            library[title] = {"author": author, "category": category, "available": True}
+            print(f"Item '{title}' added to the library.")
+
+        elif choice == '2':
+            # Borrow an item
+            title = input("Enter the title of the item to borrow: ").strip()
+            if title in library:
+                if library[title]["available"]:
+                    borrower = input("Enter the borrower's name: ").strip()
+                    due_date = datetime.now() + timedelta(days=14)
+                    borrowed_items[title] = {"borrower": borrower, "due_date": due_date}
+                    library[title]["available"] = False
+                    print(f"Item '{title}' borrowed by {borrower}. Due date: {due_date.strftime('%Y-%m-%d')}")
+                else:
+                    print(f"Item '{title}' is currently not available.")
+            else:
+                print(f"No item found with the title '{title}'.")
+
+        elif choice == '3':
+            # Return an item
+            title = input("Enter the title of the item to return: ").strip()
+            if title in borrowed_items:
+                borrowed_date = borrowed_items[title]["due_date"]
+                returned_date = datetime.now()
+                library[title]["available"] = True
+                del borrowed_items[title]
+                print(f"Item '{title}' returned successfully.")
+
+                # Calculate overdue fine
+                if returned_date > borrowed_date:
+                    overdue_days = (returned_date - borrowed_date).days
+                    fine = overdue_days * 5  # Rs5 per day
+                    print(f"Late return! You have a fine of Rs{fine:.2f} for {overdue_days} overdue days.")
+                else:
+                    print("Returned on time. No fine.")
+            else:
+                print(f"No borrowed record found for '{title}'.")
+
+        elif choice == '4':
+            # View all items
+            if not library:
+                print("The library is empty.")
+            else:
+                print("\nLibrary Collection:")
+                for title, details in library.items():
+                    status = "Available" if details["available"] else "Borrowed"
+                    print(f"Title: {title}, Author: {details['author']}, Category: {details['category']}, Status: {status}")
+
+        elif choice == '5':
+            # Search for an item
+            search_term = input("Enter the title or author to search for: ").strip().lower()
+            results = {title: details for title, details in library.items() if search_term in title.lower() or search_term in details["author"].lower()}
+            if results:
+                print("\nSearch Results:")
+                for title, details in results.items():
+                    status = "Available" if details["available"] else "Borrowed"
+                    print(f"Title: {title}, Author: {details['author']}, Category: {details['category']}, Status: {status}")
+            else:
+                print("No items match your search.")
+
+        elif choice == '6':
+            # Exit the system
+            print("Exiting the Library Management System. Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please select a valid option.")
+
+# Run the Library Management System
+if __name__ == "__main__":
+    library_management_system()

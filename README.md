@@ -2,8 +2,7 @@
 ##### Company: CODTECH IT SOLUTIONS
 ##### ID: CT08DS571
 ##### Domain: PYTHON PROGRAMMING
-##### Duration: 12 DEC 2024 TO 12 JAN 2025
-##### Mentor: SRAVANI 
+##### Duration: 12 DEC 2024 TO 12 JAN 2025 
 
 # **OVERVIEW OF THE PROJECT**
 
